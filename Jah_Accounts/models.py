@@ -13,8 +13,9 @@ class Customer(models.Model):
     
 class Product(models.Model):
     CATEGORY = (
-        ('Indoor', 'Indoor'),
-        ('Outdoor', 'Outdoor'),
+        ('Floor', 'Floor'),
+        ('Honey', 'Honey'),
+        ('Spice', 'Spice'),
     )
     name = models.CharField(max_length=200, null=True)
     price = models.FloatField(null=True)
