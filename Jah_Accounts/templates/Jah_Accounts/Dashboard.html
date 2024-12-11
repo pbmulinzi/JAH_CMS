@@ -9,31 +9,46 @@
     <div class="col-md-5">
         <h5>CUSTOMERS:</h5>
         <hr>
-        <div class="card card-body">
-            <a class="btn btn-primary btn-sm btn-block" href="">Create Customer</a>
-            <table class="table table-sm">
+        <div class="card card-body" style="background-color: ivory;">
+            <a class="btn btn-primary btn-sm btn-block" href="http://127.0.0.1:8000/admin/Jah_Accounts/customer/add/" style="background-color: bisque; color: blue; text-decoration: underline;">Create Customer</a>
+            <table class="table table-sm"">
                 <tr>
-                    <th></th>
                     <th>Customer</th>
-                    <th>Orders</th>
+                    <th>Phone</th>
                 </tr>
+                {% for x in customers %}
+                  <tr>
+                    <td>{{ x.name }}</td>
+                    <td>{{ x.phone }}</td>
+                  </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
 
     <div class="col-md-7">
-        <h5>LAST 5 ORDERS:</h5>
+        <h5>LATEST ORDERS:</h5>
         <hr>
-        <div class="card card-body">
-            <a class="btn btn-primary btn-sm btn-block" href="">Create Order</a>
+        <div class="card card-body" style="background-color: ivory;">
+            <a class="btn btn-primary btn-sm btn-block" href="http://127.0.0.1:8000/admin/Jah_Accounts/order/add/" style="background-color: bisque; color: blue; text-decoration: underline;">Create Order</a>
             <table class="table table-sm">
                 <tr>
+                    <th>Customer</th>
                     <th>Product</th>
+                    <th>Quantity(KGS)</th>
                     <th>Date Ordered</th>
                     <th>Status</th>
-                    <th>Update</th>
-                    <th>Remove</th>
                 </tr>
+
+                {% for y in orders  %}
+                    <tr>
+                        <td>{{ y.Customer }}</td>
+                        <td>{{ y.Product }}</td>
+                        <td>{{ y.Quantity_kgs }}</td>
+                        <td>{{ y.date_created }}</td>
+                        <td>{{ y.status }}</td>
+                    </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
