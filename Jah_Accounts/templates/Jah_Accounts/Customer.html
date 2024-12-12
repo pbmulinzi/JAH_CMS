@@ -54,13 +54,18 @@
                     <th>Category</th>
                     <th>Date Ordered</th>
                     <th>Status</th>
+                    <th>Update</th>
+                    <th>Remove</th>
                 </tr>
 
-                {% for product in products %}
+                {% for order in orders %}
                   <tr>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.category }}</td>
-                    <td>{{ product.date_created }}</td>
+                    <td>{{ order.Product }}</td>
+                    <td>{{ order.Product.category }}</td>
+                    <td>{{ order.date_created }}</td>
+                    <td>{{ order.status }}</td>
+                    <td><a href="">Update</a></td>
+                    <td><a href="">Remove</a></td>
                   </tr>
                 {% endfor %}
 

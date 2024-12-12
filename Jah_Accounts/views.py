@@ -20,11 +20,10 @@ def products(request):
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
-def customers(request):
+def customers(request, pk_test):
 
-    customers = Customer.objects.all()
-    products = Product.objects.all()
-    orders = Order.objects.all()
+    customers = Customer.objects.get(id = pk_test)
+    orders = Customer.order_set.all()  #need to re-go through the purpose of this when back online!
 
-    customer_products_orders = {'customers': customers, 'products': products, 'orders': orders,}
-    return render(request, 'Jah_Accounts/Customer.html', customer_products_orders)
+    context = {'customers': customers, 'orders': orders,}
+    return render(request, 'Jah_Accounts/Customer.html', context)
