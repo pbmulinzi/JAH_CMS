@@ -8,8 +8,12 @@ def dashboard(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
 
-    customer_n_phones = {'orders': orders, 'customers': customers}
-    return render(request, 'Jah_Accounts/Dashboard.html', customer_n_phones)
+    total_orders = orders.count()
+    pending = Order.objects.filter(status = 'Pending').count()
+    delivered = Order.objects.filter(status = 'Delivered').count()
+
+    context = {'orders': orders, 'customers': customers, 'total_orders': total_orders, 'pending': pending, 'delivered': delivered,}
+    return render(request, 'Jah_Accounts/Dashboard.html', context)
 
 def products(request):
 
