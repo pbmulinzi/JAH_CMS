@@ -23,7 +23,8 @@ def products(request):
 def customers(request, pk_test):
 
     customers = Customer.objects.get(id = pk_test)
-    orders = customers.order_set.all()  #need to re-go through the purpose of this when back online!
+    orders = customers.order_set.all()  #need to re-go through the exact purpose of this when back online!
 
     context = {'customers': customers, 'orders': orders,}
     return render(request, 'Jah_Accounts/Customer.html', context)
+
