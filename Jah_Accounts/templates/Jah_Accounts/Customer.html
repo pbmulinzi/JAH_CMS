@@ -10,7 +10,7 @@
             <h5>Customer:</h5>
             <hr>
             <a class="btn btn-outline-info btn-sm btn-block" href="">Update Customer</a>
-            <a class="btn btn-outline-info btn-sm btn-block" href="" style="color: red;">Delete Customer</a>
+            <a class="btn btn-outline-danger btn-sm btn-block" href="">Delete Customer</a>
         </div>
     </div>
 
@@ -18,8 +18,8 @@
         <div class="card card-body">
             <h5>Contact Information</h5>
             <hr>
-            <p>Email: </p>
-            <p>Phone: </p>
+            <p>Email: {{customers.email}}</p>
+            <p>Phone: {{customers.phone}}</p>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
         <div class="card card-body">
             <h5>Total Orders</h5>
             <hr>
-            <h1 style="text-align: center; padding: 10px;"></h1>
+            <h1 style="text-align: center; padding: 10px;">{{order_count}}</h1>
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
         <div class="card card-body">
             <form method="get">
 
-                <button class="btn btn-primry" type="submit" style="background-color: rgb(223, 220, 207); color: blue; text-decoration: underline;">Search..</button>
+                <button class="btn btn-primry btn-outline-info" type="submit">Search..</button>
             </form>
         </div>
     </div>
@@ -64,8 +64,8 @@
                     <td>{{ order.Product.category }}</td>
                     <td>{{ order.date_created }}</td>
                     <td>{{ order.status }}</td>
-                    <td><a href="">Update</a></td>
-                    <td><a href="">Remove</a></td>
+                    <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
                   </tr>
                 {% endfor %}
 
