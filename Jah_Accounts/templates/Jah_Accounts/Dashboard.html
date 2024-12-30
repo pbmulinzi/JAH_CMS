@@ -19,7 +19,7 @@
                 </tr>
                 {% for customers in customers %}
                   <tr>
-                    <td><a href="{% url 'customers' customers.id %}">view</a></td>
+                    <td><a class="btn btn-sm btn-outline-info" href="{% url 'customers' customers.id %}">view</a></td>
                     <td>{{ customers.name }}</td>
                     <td>{{ customers.phone }}</td>
                   </tr>
@@ -46,10 +46,10 @@
                 {% for y in orders  %}
                     <tr>
                         <td>{{ y.Product }}</td>
-                        <td>{{ y.Quantity_kgs }}</td>
+                        <td>{{ y.Quantity }}</td>
                         <td>{{ y.date_created }}</td>
                         <td>{{ y.status }}</td>
-                        <td><a class="btn btn-outline-info btn-sm btn-block" href="">Update</a></td>
+                        <td><a class="btn btn-outline-info btn-sm " href="">Update</a></td>
                         <td><a class="btn btn-outline-danger btn-sm btn-block" href="">Delete</a></td>
                     </tr>
                 {% endfor %}
