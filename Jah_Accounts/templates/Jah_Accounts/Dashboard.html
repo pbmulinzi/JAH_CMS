@@ -32,7 +32,7 @@
         <h5>LATEST ORDERS:</h5>
         <hr>
         <div class="card card-body" style="background-color: ivory;">
-            <a class="btn btn-primary btn-sm btn-block" href="http://127.0.0.1:8000/admin/Jah_Accounts/order/add/" style="background-color: bisque; color: blue;">Create Order</a>
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'createOrder' %}" style="background-color: bisque; color: blue;">Create Order</a>
             <table class="table table-sm">
                 <tr>
                     <th>Product</th>
@@ -49,7 +49,7 @@
                         <td>{{ y.Quantity }}</td>
                         <td>{{ y.date_created }}</td>
                         <td>{{ y.status }}</td>
-                        <td><a class="btn btn-outline-info btn-sm " href="">Update</a></td>
+                        <td><a class="btn btn-outline-info btn-sm " href="{% url 'updateOrder' orders.id %}">Update</a></td>
                         <td><a class="btn btn-outline-danger btn-sm btn-block" href="">Delete</a></td>
                     </tr>
                 {% endfor %}
