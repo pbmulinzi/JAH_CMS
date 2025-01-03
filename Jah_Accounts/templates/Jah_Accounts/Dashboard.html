@@ -50,7 +50,7 @@
                         <td>{{ y.date_created }}</td>
                         <td>{{ y.status }}</td>
                         <td><a class="btn btn-outline-info btn-sm " href="{% url 'updateOrder' y.id %}">Update</a></td>
-                        <td><a class="btn btn-outline-danger btn-sm btn-block" href="">Delete</a></td>
+                        <td><a class="btn btn-outline-danger btn-sm btn-block" href="{% url 'deleteOrder' y.id %}">Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>

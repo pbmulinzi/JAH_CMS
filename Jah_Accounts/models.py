@@ -45,6 +45,8 @@ class Order(models.Model):
     tags = models.ManyToManyField(Tag)
     Quantity = models.CharField(null=True, max_length=4)
 
+    def __str__(self):
+        return self.Product.name
 
     
 
