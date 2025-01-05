@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import OrderForm
+from .forms import *
 
 # Create your views here.
 
@@ -12,8 +12,9 @@ def dashboard(request):
     total_orders = orders.count()
     pending = Order.objects.filter(status = 'Pending').count()
     delivered = Order.objects.filter(status = 'Delivered').count()
+    Out_for_Delivery =  Order.objects.filter(status = 'Out for delivery').count()
 
-    context = {'orders': orders, 'customers': customers, 'total_orders': total_orders, 'pending': pending, 'delivered': delivered,}
+    context = {'orders': orders, 'customers': customers, 'total_orders': total_orders, 'pending': pending, 'delivered': delivered, 'Out_for_Delivery': Out_for_Delivery}
     return render(request, 'Jah_Accounts/Dashboard.html', context)
 
 def products(request):
@@ -62,3 +63,15 @@ def deleteOrder(request, pk):
 
     context = {'item': order}
     return render(request, 'Jah_Accounts/delete.html', context)
+
+def updateCustomer(request, pk):
+    customer = Customer.objects.get(id=pk)
+    form = CustomerForm(instance=customer)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        
+    context = {'form': form,}
+    return render(request, 'Jah_Accounts/updateCustomer.html', context)
