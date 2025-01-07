@@ -33,7 +33,7 @@ def customers(request, cust_id):
 
 def createOrder(request, pk):
     customer = Customer.objects.get(id=pk)
-    form = OrderForm()
+    form = OrderForm(initial={'Customer': customer,})
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
