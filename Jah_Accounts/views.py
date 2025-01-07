@@ -28,10 +28,11 @@ def customers(request, cust_id):
     orders = customers.order_set.all()  #need to re-go through the exact purpose of this when back online!
     order_count = orders.count()
 
-    context = {'customers': customers, 'orders': orders, 'order_count': order_count,}
+    context = {'customers': customers, 'orders': orders, 'order_count': order_count, 'customer_name': customers,}
     return render(request, 'Jah_Accounts/Customer.html', context)
 
-def createOrder(request):
+def createOrder(request, pk):
+    customer = Customer.objects.get(id=pk)
     form = OrderForm()
     if request.method == 'POST':
         form = OrderForm(request.POST)
