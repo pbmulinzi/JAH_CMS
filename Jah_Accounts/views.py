@@ -76,3 +76,15 @@ def updateCustomer(request, pk):
         
     context = {'form': form,}
     return render(request, 'Jah_Accounts/updateCustomer.html', context)
+
+def createCustomer(request):
+    customer = Customer.objects.all()
+    form = CustomerForm(initial={'customer': customer})
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context= {'form':form,}
+    return render(request, 'Jah_Accounts/createCustomer.html', context)
