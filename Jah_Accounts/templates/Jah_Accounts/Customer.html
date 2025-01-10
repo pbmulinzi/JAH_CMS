@@ -52,6 +52,7 @@
             <table class="table table-sm">
                 <tr style="background-color: ivory;">
                     <th>Product</th>
+                    <th>Quantity</th>
                     <th>Category</th>
                     <th>Date Ordered</th>
                     <th>Status</th>
@@ -62,6 +63,7 @@
                 {% for order in orders %}
                   <tr>
                     <td>{{ order.Product }}</td>
+                    <td>{{order.Quantity}}</td>
                     <td>{{ order.Product.category }}</td>
                     <td>{{ order.date_created }}</td>
                     <td>{{ order.status }}</td>

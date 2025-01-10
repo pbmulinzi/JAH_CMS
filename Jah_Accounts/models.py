@@ -38,12 +38,17 @@ class Order(models.Model):
         ('Out for delivery', 'Out for delivery'),
         ('Delivered', 'Delivered'),
     )
+    MEASUREMENT = (
+        ('Kgs', 'Kgs'),
+        ('Tins', 'Tins'),
+    )
     Customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     Product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL,)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS)
     tags = models.ManyToManyField(Tag)
     Quantity = models.CharField(null=True, max_length=4)
+    units = models.CharField(max_length=200, null=True, choices=MEASUREMENT,)
 
     def __str__(self):
         return self.Product.name
