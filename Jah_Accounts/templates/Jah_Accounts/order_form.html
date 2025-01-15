@@ -7,7 +7,10 @@
         <div class="card card-body" style="background-color: rgb(223, 220, 207);">
             <form action="" method="POST">
                 {% csrf_token %}
-                {{form}}
+                {% for formset in formset  %}
+                    {{formset}}
+                    <hr>
+                {% endfor %}
                 <input type="submit" name="Submit">
             </form>
         </div>
