@@ -39,25 +39,24 @@ def createOrder(request, pk):
     #form above has been commented and replaced by formset (below) such that multiple orders can be made.
     formset = OrderFormSet(instance=customer) #such that we can have multiple forms
     if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = OrderFormSet(request.POST, instance=customer)
+        if formset.is_valid():
+            formset.save()
             return redirect('/')
 
     context= {'formset':formset,}
     return render(request, 'Jah_Accounts/order_form.html', context)
 
 def updateOrder(request, pk):
-
     order = Order.objects.get(id=pk)
-    form = OrderForm(instance=order)
+    formset = OrderForm(instance=order)
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
-            form.save()
+        formset = OrderForm(request.POST, instance=order)
+        if formset.is_valid():
+            formset.save()
             return redirect('/')
 
-    context = {'form': form,}
+    context = {'formset': formset,}
     return render(request, 'Jah_Accounts/order_form.html', context)
 
 def deleteOrder(request, pk):
@@ -92,3 +91,10 @@ def createCustomer(request):
 
     context= {'form':form,}
     return render(request, 'Jah_Accounts/createCustomer.html', context)
+
+from django.shortcuts import render
+
+def footer_view(request):
+    email_address = "pbmulinzi@gmail.com" 
+    context = {'email_address': email_address} 
+    return render(request, 'main.html', context)
