@@ -33,11 +33,11 @@ def customers(request, cust_id):
     return render(request, 'Jah_Accounts/Customer.html', context)
 
 def createOrder(request, pk):
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'status'))
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'status'), extra=7) #extra 7 helps to add extra 7 forms
     customer = Customer.objects.get(id=pk)
     #form = OrderForm(initial={'Customer': customer,})
     #form above has been commented and replaced by formset (below) such that multiple orders can be made.
-    formset = OrderFormSet(instance=customer) #such that we can have multiple forms
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer) #such that we can have multiple forms
     if request.method == 'POST':
         formset = OrderFormSet(request.POST, instance=customer)
         if formset.is_valid():
