@@ -53,7 +53,7 @@
                 <tr style="background-color: ivory;">
                     <th>Product</th>
                     <th>Quantity</th>
-                    <th>Category</th>
+                    <th>Note</th>
                     <th>Date Ordered</th>
                     <th>Status</th>
                     <th>Update</th>
@@ -64,7 +64,7 @@
                   <tr>
                     <td>{{ order.Product }}</td>
                     <td>{{order.Quantity}}</td>
-                    <td>{{ order.Product.category }}</td>
+                    <td>{{ order.note }}</td>
                     <td>{{ order.date_created }}</td>
                     <td>{{ order.status }}</td>
                     <td><a class="btn btn-sm btn-outline-info" href="{% url 'updateOrder' order.id %}">Update</a></td>

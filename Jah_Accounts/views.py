@@ -1,12 +1,27 @@
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+
+#Create your views here
 from .models import *
-from .forms import *
+from .forms import OrderForm, CreateUserForm
 from .filters import OrderFilter
 
 
+def registerPage(request):
+    form = CreateUserForm()
 
-# Create your views here.
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form,}
+    return render(request, 'Jah_Accounts/register.html', context)
+
+def loginPage(request):
+    context = {}
+    return render(request, 'Jah_Accounts/login.html', context)
 
 def dashboard(request):
 
