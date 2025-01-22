@@ -6,7 +6,7 @@ from django.contrib import messages
 
 #Create your views here
 from .models import *
-from .forms import OrderForm, CreateUserForm
+from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter
 
 
@@ -38,8 +38,15 @@ def dashboard(request):
     delivered = Order.objects.filter(status = 'Delivered').count()
     Out_for_Delivery =  Order.objects.filter(status = 'Out for delivery').count()
 
+
     context = {'orders': orders, 'customers': customers, 'total_orders': total_orders, 'pending': pending, 'delivered': delivered, 'Out_for_Delivery': Out_for_Delivery}
     return render(request, 'Jah_Accounts/Dashboard.html', context)
+
+    # return render(request, 'Jah_Accounts/Dashboard.html', {**context , 'email_address' : email_address})
+    #we use double stars for spread operators in dictionaries, and a single star for spread operators in lists
+    #THE COMMENTED CODE ABOVE ENTAILS THE USE OF SPREAD OPERATORS, TO BE READ ABOUT.....AS STATED IN THE COMMENTS BELOW. It's been commented because i put the email directly in the footer provision under the main.html template 
+    #read about "spread operators" both in javascript and python; e.g the 2 stars used above next to the context in regard to the email address.
+    #another way to do it, is just including the email address in the context dictionary
 
 def products(request):
 
@@ -118,9 +125,3 @@ def createCustomer(request):
     context= {'form':form,}
     return render(request, 'Jah_Accounts/createCustomer.html', context)
 
-from django.shortcuts import render
-
-def footer_view(request):
-    email_address = "pbmulinzi@gmail.com" 
-    context = {'email_address': email_address} 
-    return render(request, 'main.html', context)
