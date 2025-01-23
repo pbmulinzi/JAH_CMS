@@ -1,4 +1,12 @@
+{% load static %}
 
+<style>
+  .hello-msg{
+    font-size: 18px;
+    color: #fff;
+    margin-right: 20px;
+  }
+</style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <img src="/static/images/jah_sample_logo.png" alt="" width="48" height="35">
@@ -13,4 +21,8 @@
         <a class="nav-item nav-link" href="http://127.0.0.1:8000/admin/">Admin-gwa</a>
       </div>
     </div>
+
+    <span class="hello-msg">Hello, {{request.user}}</span>
+    <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+
   </nav>

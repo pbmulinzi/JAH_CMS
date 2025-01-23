@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
+
 
 #Create your views here
 from .models import *
@@ -11,23 +14,50 @@ from .filters import OrderFilter
 
 
 def registerPage(request):
-    form = CreateUserForm()
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    else:
+        form = CreateUserForm()
 
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for '+ user)
-            return redirect('login')
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user = form.cleaned_data.get('username')
+                messages.success(request, 'Account was created for '+ user)
+                return redirect('login')
 
-    context = {'form': form,}
-    return render(request, 'Jah_Accounts/register.html', context)
+        context = {'form': form,}
+        return render(request, 'Jah_Accounts/register.html', context)
 
 def loginPage(request):
-    context = {}
-    return render(request, 'Jah_Accounts/login.html', context)
 
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    else:
+
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.info(request, 'username OR password is incorrect.')
+
+        context = {}
+        return render(request, 'Jah_Accounts/login.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def dashboard(request):
 
     orders = Order.objects.all()
@@ -48,11 +78,13 @@ def dashboard(request):
     #read about "spread operators" both in javascript and python; e.g the 2 stars used above next to the context in regard to the email address.
     #another way to do it, is just including the email address in the context dictionary
 
+@login_required(login_url='login')
 def products(request):
 
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
+@login_required(login_url='login')
 def customers(request, cust_id):
 
     customers = Customer.objects.get(id = cust_id)
@@ -65,6 +97,7 @@ def customers(request, cust_id):
     context = {'customers': customers, 'orders': orders, 'order_count': order_count, 'customer_name': customers, 'myFilter': myFilter,}
     return render(request, 'Jah_Accounts/Customer.html', context)
 
+@login_required(login_url='login')
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'status'), extra=7) #extra 7 helps to add extra 7 forms
     customer = Customer.objects.get(id=pk)
@@ -80,6 +113,7 @@ def createOrder(request, pk):
     context= {'formset':formset,}
     return render(request, 'Jah_Accounts/order_form.html', context)
 
+@login_required(login_url='login')
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
     formset = OrderForm(instance=order)
@@ -92,6 +126,7 @@ def updateOrder(request, pk):
     context = {'formset': formset,}
     return render(request, 'Jah_Accounts/order_form.html', context)
 
+@login_required(login_url='login')
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
@@ -101,6 +136,7 @@ def deleteOrder(request, pk):
     context = {'item': order}
     return render(request, 'Jah_Accounts/delete.html', context)
 
+@login_required(login_url='login')
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
@@ -113,6 +149,7 @@ def updateCustomer(request, pk):
     context = {'form': form,}
     return render(request, 'Jah_Accounts/updateCustomer.html', context)
 
+@login_required(login_url='login')
 def createCustomer(request):
     customer = Customer.objects.all()
     form = CustomerForm(initial={'customer': customer})
