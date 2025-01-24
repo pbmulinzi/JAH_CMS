@@ -4,77 +4,81 @@
 
 <br>
 
-<div class="row">
-    <div class="col-md">
-        <div class="card card-body">
-            <h5>{{customer_name}}</h5>
-            
-            <hr>
-            <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'updateCustomer' customers.id %}">Update Customer</a>
-            <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'createOrder' customers.id %}">Place Order</a>
+<div style="background-color: #f0f0f0;">
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>{{customer_name}}</h5>
+                
+                <hr>
+                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'updateCustomer' customers.id %}">Update Customer</a>
+                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'createOrder' customers.id %}">Place Order</a>
+            </div>
+        </div>
+    
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Contact Information</h5>
+                <hr>
+                <p><b>Email</b>: {{customers.email}}</p>
+                <p><b>Phone</b>: {{customers.phone}}</p>
+            </div>
+        </div>
+    
+        <div class="col-md">
+            <div class="card card-body">
+                <h5>Total Orders</h5>
+                <hr>
+                <h1 style="text-align: center; padding: 10px;">{{order_count}}</h1>
+            </div>
         </div>
     </div>
-
-    <div class="col-md">
-        <div class="card card-body">
-            <h5>Contact Information</h5>
-            <hr>
-            <p><b>Email</b>: {{customers.email}}</p>
-            <p><b>Phone</b>: {{customers.phone}}</p>
+    
+    <br>
+    
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                    {{myFilter.form}}
+                <button class="btn btn-primry btn-outline-info" type="submit">Search..</button>
+                </form>
+            </div>
         </div>
     </div>
-
-    <div class="col-md">
-        <div class="card card-body">
-            <h5>Total Orders</h5>
-            <hr>
-            <h1 style="text-align: center; padding: 10px;">{{order_count}}</h1>
+    
+    <br>
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body" style="background-color: rgb(223, 220, 207);">
+                <table class="table table-sm">
+                    <tr style="background-color: ivory;">
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Note</th>
+                        <th>Date Ordered</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Remove</th>
+                    </tr>
+    
+                    {% for order in orders %}
+                      <tr>
+                        <td>{{ order.Product }}</td>
+                        <td>{{order.Quantity}}</td>
+                        <td>{{ order.note }}</td>
+                        <td>{{ order.date_created }}</td>
+                        <td>{{ order.status }}</td>
+                        <td><a class="btn btn-sm btn-outline-info" href="{% url 'updateOrder' order.id %}">Update</a></td>
+                        <td><a class="btn btn-sm btn-outline-danger" href="{% url 'deleteOrder' order.id %}">Remove</a></td>
+                      </tr>
+                    {% endfor %}
+    
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
-<br>
-<div class="row">
-    <div class="col">
-        <div class="card card-body">
-            <form method="get">
-                {{myFilter.form}}
-            <button class="btn btn-primry btn-outline-info" type="submit">Search..</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<br>
-<div class="row">
-    <div class="col-md">
-        <div class="card card-body" style="background-color: rgb(223, 220, 207);">
-            <table class="table table-sm">
-                <tr style="background-color: ivory;">
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Note</th>
-                    <th>Date Ordered</th>
-                    <th>Status</th>
-                    <th>Update</th>
-                    <th>Remove</th>
-                </tr>
-
-                {% for order in orders %}
-                  <tr>
-                    <td>{{ order.Product }}</td>
-                    <td>{{order.Quantity}}</td>
-                    <td>{{ order.note }}</td>
-                    <td>{{ order.date_created }}</td>
-                    <td>{{ order.status }}</td>
-                    <td><a class="btn btn-sm btn-outline-info" href="{% url 'updateOrder' order.id %}">Update</a></td>
-                    <td><a class="btn btn-sm btn-outline-danger" href="{% url 'deleteOrder' order.id %}">Remove</a></td>
-                  </tr>
-                {% endfor %}
-
-            </table>
-        </div>
-    </div>
-</div>
 
 {% endblock %}
