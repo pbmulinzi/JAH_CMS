@@ -11,47 +11,42 @@ from django.contrib import messages
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter
+from .decorators import unauthenticated_user
 
 
+@unauthenticated_user
 def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
     
-    else:
-        form = CreateUserForm()
+    form = CreateUserForm()
 
-        if request.method == 'POST':
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for '+ user)
-                return redirect('login')
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for '+ user)
+            return redirect('login')
 
-        context = {'form': form,}
-        return render(request, 'Jah_Accounts/register.html', context)
+    context = {'form': form,}
+    return render(request, 'Jah_Accounts/register.html', context)
 
+@unauthenticated_user
 def loginPage(request):
 
-    if request.user.is_authenticated:
-        return redirect('home')
-    
-    else:
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
 
-            user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, 'username OR password is incorrect.')
 
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-            else:
-                messages.info(request, 'username OR password is incorrect.')
-
-        context = {}
-        return render(request, 'Jah_Accounts/login.html', context)
+    context = {}
+    return render(request, 'Jah_Accounts/login.html', context)
 
 def logoutUser(request):
     logout(request)
@@ -77,6 +72,10 @@ def dashboard(request):
     #THE COMMENTED CODE ABOVE ENTAILS THE USE OF SPREAD OPERATORS, TO BE READ ABOUT.....AS STATED IN THE COMMENTS BELOW. It's been commented because i put the email directly in the footer provision under the main.html template 
     #read about "spread operators" both in javascript and python; e.g the 2 stars used above next to the context in regard to the email address.
     #another way to do it, is just including the email address in the context dictionary
+
+def userPage(request):
+    context = {}
+    return render(request, 'Jah_Accounts/user.html', context)
 
 @login_required(login_url='login')
 def products(request):
