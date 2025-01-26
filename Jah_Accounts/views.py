@@ -30,7 +30,7 @@ def registerPage(request):
     context = {'form': form,}
     return render(request, 'Jah_Accounts/register.html', context)
 
-@unauthenticated_user
+@unauthenticated_user #defined in the decorators file
 def loginPage(request):
 
     if request.method == 'POST':
