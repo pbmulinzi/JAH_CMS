@@ -11,7 +11,7 @@ from django.contrib import messages
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user, allowed_users
 
 
 @unauthenticated_user
@@ -53,6 +53,7 @@ def logoutUser(request):
     return redirect('login')
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def dashboard(request):
 
     orders = Order.objects.all()
@@ -78,12 +79,14 @@ def userPage(request):
     return render(request, 'Jah_Accounts/user.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def products(request):
 
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def customers(request, cust_id):
 
     customers = Customer.objects.get(id = cust_id)
@@ -97,6 +100,7 @@ def customers(request, cust_id):
     return render(request, 'Jah_Accounts/Customer.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'status'), extra=7) #extra 7 helps to add extra 7 forms
     customer = Customer.objects.get(id=pk)
@@ -113,6 +117,7 @@ def createOrder(request, pk):
     return render(request, 'Jah_Accounts/order_form.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
     formset = OrderForm(instance=order)
@@ -126,6 +131,7 @@ def updateOrder(request, pk):
     return render(request, 'Jah_Accounts/order_form.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
@@ -136,6 +142,7 @@ def deleteOrder(request, pk):
     return render(request, 'Jah_Accounts/delete.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
@@ -149,6 +156,7 @@ def updateCustomer(request, pk):
     return render(request, 'Jah_Accounts/updateCustomer.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def createCustomer(request):
     customer = Customer.objects.all()
     form = CustomerForm(initial={'customer': customer})
