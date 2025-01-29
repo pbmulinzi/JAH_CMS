@@ -11,7 +11,7 @@ from django.contrib import messages
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter
-from .decorators import unauthenticated_user, allowed_users
+from .decorators import unauthenticated_user, allowed_users 
 
 
 @unauthenticated_user
@@ -53,7 +53,7 @@ def logoutUser(request):
     return redirect('login')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin']) # permission to view this page restricted to users belonging to the admin group
 def dashboard(request):
 
     orders = Order.objects.all()
