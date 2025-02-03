@@ -79,8 +79,13 @@ def dashboard(request):
     #read about "spread operators" both in javascript and python; e.g the 2 stars used above next to the context in regard to the email address.
     #another way to do it, is just including the email address in the context dictionary
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer', 'admin'])
 def userPage(request): 
-    context = {}
+    
+    orders = request.user.customer.order_set.all()
+    print('ORDERS:', orders)
+    context = {'orders':orders}
     return render(request, 'Jah_Accounts/user.html', context)
 
 @login_required(login_url='login')
