@@ -83,8 +83,8 @@ def dashboard(request):
 @allowed_users(allowed_roles=['customer', 'admin'])
 def userPage(request): 
     
-    orders = request.user.customer.order_set.all()
-    #YET TO FIND OUT WHY THE USER PAGE IS ONLY WORKING FOR THE USER: NAOMI....AND NOT THE REST!
+    customer = Customer.objects.get(user = request.user)
+    orders = Order.objects.filter(Customer = customer)
     print('ORDERS:', orders)
     context = {'orders':orders}
     return render(request, 'Jah_Accounts/user.html', context)
