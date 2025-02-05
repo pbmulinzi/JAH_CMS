@@ -3,23 +3,29 @@
 
 {% include 'Jah_Accounts/Status.html' %}
 
-    <table class="table table-sm">
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Date Ordered</th>
-            <th>Status</th>
-        </tr>
-    
-        {% for y in orders  %}
-            <tr>
-                <td>{{ y.Product }}</td>
-                <td>{{ y.Quantity }}</td>
-                <td>{{ y.date_created }}</td>
-                <td>{{ y.status }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Date Ordered</th>
+                    <th>Status</th>
+                </tr>
+            
+                {% for order in orders  %}
+                    <tr>
+                        <td>{{ order.Product }}</td>
+                        <td>{{ order.Quantity }}</td>
+                        <td>{{ order.date_created }}</td>
+                        <td>{{ order.status }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
 

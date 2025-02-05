@@ -29,6 +29,10 @@ def registerPage(request):
             group = Group.objects.get(name = 'customer')
             user.groups.add(group)
 
+            Customer.objects.create(
+                user = user,
+            )
+
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
 
@@ -84,9 +88,16 @@ def dashboard(request):
 def userPage(request): 
     
     customer = Customer.objects.get(user = request.user)
-    orders = Order.objects.filter(Customer = customer)
+    #orders = Order.objects.filter(Customer = customer)
+    orders = customer.order_set.all()
     print('ORDERS:', orders)
-    context = {'orders':orders}
+
+    total_orders = orders.count()
+    pending = orders.filter(status = 'Pending').count()
+    delivered = orders.filter(status = 'Delivered').count()
+    Out_for_Delivery =  orders.filter(status = 'Out for delivery').count()
+
+    context = {'orders': orders, 'total_orders': total_orders, 'pending': pending, 'delivered': delivered, 'Out_for_Delivery': Out_for_Delivery}
     return render(request, 'Jah_Accounts/user.html', context)
 
 @login_required(login_url='login')
