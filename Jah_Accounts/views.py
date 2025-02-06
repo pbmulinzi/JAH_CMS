@@ -101,6 +101,12 @@ def userPage(request):
     return render(request, 'Jah_Accounts/user.html', context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
+def accountSettings(request):
+    context = {}
+    return render(request, 'Jah_Accounts/account_settings.html', context)
+
+@login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def products(request):
 

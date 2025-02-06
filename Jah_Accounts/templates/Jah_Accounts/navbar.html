@@ -20,6 +20,8 @@
         <a class="nav-item nav-link active" href="{% url 'home' %}">Dashboard</a>
         <a class="nav-item nav-link" href="{% url 'products' %}">Products</a>
         <a class="nav-item nav-link" href="http://127.0.0.1:8000/admin/">Admin-gwa</a>
+        {% else %}
+        <a class="nav-link" href="{% url 'account' %}">Settings</a>
         {% endif %}
       </div>
     </div>

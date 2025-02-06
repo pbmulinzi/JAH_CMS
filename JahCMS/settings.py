@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
+
 """
 
 from pathlib import Path
@@ -120,7 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-#read about static urls
+#read more on static urls
 STATIC_URL = 'static/'
 
 MEDIA_URL = '/images/' #linking the images in my static files to the settings in the project - this one -
@@ -128,7 +129,7 @@ MEDIA_URL = '/images/' #linking the images in my static files to the settings in
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
