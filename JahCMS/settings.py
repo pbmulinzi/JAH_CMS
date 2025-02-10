@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'Jah_Accounts',
+    'Jah_Accounts.apps.BaseConfig',
 
     'django_filters',
 ]

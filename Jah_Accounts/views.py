@@ -101,9 +101,15 @@ def userPage(request):
     return render(request, 'Jah_Accounts/user.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['customer'])
+@allowed_users(allowed_roles=['customer', 'admin'])
 def accountSettings(request):
-    context = {}
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance = customer)
+
+    context = {'form': form}
     return render(request, 'Jah_Accounts/account_settings.html', context)
 
 @login_required(login_url='login')
