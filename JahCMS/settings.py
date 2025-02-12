@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'JahCMS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DEMO_TEST',
+        'NAME': 'pbmulinzi',
         'USER': 'postgres',
         'PASSWORD': 'dxdiag256',
-        'HOST': 'localhost',
+        'HOST': 'demo-postgres.cbsk68qiy01o.eu-north-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
