@@ -27,7 +27,7 @@ urlpatterns = [
 #Troubleshoot: find out why the email isn't arriving!
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name = 'Jah_Accounts/Password_reset.html'), name='reset_password'),
 
-    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name = 'Jah_Accounts/Password_reset_sent.html'), name='password_reset_sent'),
+    path('reset_password/done/', auth_views.PasswordResetDoneView.as_view(template_name = 'Jah_Accounts/Password_reset_sent.html'), name='password_reset_done'),
 
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name = 'Jah_Accounts/Password_reset_form.html'), name='password_reset_confirm'),
 

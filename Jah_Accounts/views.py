@@ -3,7 +3,9 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group 
+from django.contrib.auth.models import Group
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+
 
 from django.contrib import messages
 
@@ -12,10 +14,11 @@ from django.contrib import messages
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter
-from .decorators import unauthenticated_user, allowed_users, admin_only 
+#from .decorators import unauthenticated_user, allowed_users, admin_only 
 
 
-@unauthenticated_user
+#@unauthenticated_user
+#@csrf_protect
 def registerPage(request):
     
     form = CreateUserForm()
@@ -26,13 +29,16 @@ def registerPage(request):
             user = form.save()
             username = form.cleaned_data.get('username')
 
+            #creates a customer object for the new user
+            Customer.objects.create(user = user)
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
 
     context = {'form': form,}
     return render(request, 'Jah_Accounts/register.html', context)
 
-@unauthenticated_user #defined in the decorators file
+#@unauthenticated_user #defined in the decorators file
+#@csrf_protect
 def loginPage(request):
 
     if request.method == 'POST':
@@ -54,8 +60,8 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-@login_required(login_url='login')
-@admin_only
+#@login_required(login_url='login')
+#@admin_only
 def dashboard(request):
 
     orders = Order.objects.all()
@@ -76,8 +82,8 @@ def dashboard(request):
     #read about "spread operators" both in javascript and python; e.g the 2 stars used above next to the context in regard to the email address.
     #another way to do it, is just including the email address in the context dictionary
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['customer', 'admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['customer', 'admin'])
 def userPage(request): 
     
     customer = Customer.objects.get(user = request.user)
@@ -93,27 +99,16 @@ def userPage(request):
     context = {'orders': orders, 'total_orders': total_orders, 'pending': pending, 'delivered': delivered, 'Out_for_Delivery': Out_for_Delivery}
     return render(request, 'Jah_Accounts/user.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['customer', 'admin'])
-def accountSettings(request):
-    customer = request.user.customer
-    form = CustomerForm(instance=customer)
 
-    if request.method == 'POST':
-        form = CustomerForm(request.POST, request.FILES, instance = customer)
-
-    context = {'form': form}
-    return render(request, 'Jah_Accounts/account_settings.html', context)
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin', 'customer'])
 def products(request):
 
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
 def customers(request, cust_id):
 
     customers = Customer.objects.get(id = cust_id)
@@ -126,10 +121,11 @@ def customers(request, cust_id):
     context = {'customers': customers, 'orders': orders, 'order_count': order_count, 'customer_name': customers, 'myFilter': myFilter,}
     return render(request, 'Jah_Accounts/Customer.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def createOrder(request, pk):
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'status'), extra=7) #extra 7 helps to add extra 7 forms
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'Quantity', 'note', 'status'), extra=4) #extra 7 helps to add extra 7 forms
     customer = Customer.objects.get(id=pk)
     #form = OrderForm(initial={'Customer': customer,})
     #form above has been commented and replaced by formset (below) such that multiple orders can be made.
@@ -143,8 +139,9 @@ def createOrder(request, pk):
     context= {'formset':formset,}
     return render(request, 'Jah_Accounts/order_form.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
     formset = OrderForm(instance=order)
@@ -157,8 +154,9 @@ def updateOrder(request, pk):
     context = {'formset': formset,}
     return render(request, 'Jah_Accounts/order_form.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
@@ -168,8 +166,9 @@ def deleteOrder(request, pk):
     context = {'item': order}
     return render(request, 'Jah_Accounts/delete.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
@@ -182,8 +181,9 @@ def updateCustomer(request, pk):
     context = {'form': form,}
     return render(request, 'Jah_Accounts/updateCustomer.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def createCustomer(request):
     customer = Customer.objects.all()
     form = CustomerForm(initial={'customer': customer})
@@ -196,3 +196,15 @@ def createCustomer(request):
     context= {'form':form,}
     return render(request, 'Jah_Accounts/createCustomer.html', context)
 
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['customer', 'admin'])
+#@csrf_protect
+def accountSettings(request):
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance = customer)
+
+    context = {'form': form}
+    return render(request, 'Jah_Accounts/account_settings.html', context)
