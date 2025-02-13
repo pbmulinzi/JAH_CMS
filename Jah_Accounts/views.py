@@ -129,7 +129,7 @@ def createOrder(request, pk):
     customer = Customer.objects.get(id=pk)
     #form = OrderForm(initial={'Customer': customer,})
     #form above has been commented and replaced by formset (below) such that multiple orders can be made.
-    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer) #such that we can have multiple forms
+    formset = OrderFormSet(queryset=Order.objects.none(), instance=customer) #such that we can have multiple formss
     if request.method == 'POST':
         formset = OrderFormSet(request.POST, instance=customer)
         if formset.is_valid():
