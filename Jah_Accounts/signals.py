@@ -1,4 +1,47 @@
 from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from .models import Customer
+import logging
+
+logger = logging.getLogger(__name__)
+
+@receiver(post_save, sender=Customer)
+def create_customer_profile(sender, instance, created, **kwargs):
+    if created:
+        customer, created = Customer.objects.get_or_create(
+            user=instance, 
+            defaults={'name': instance.username},
+            )
+        if created:
+            logger.info(f'Customer profile created for user: {instance.username}')
+        else:
+            logger.warning(f'Customer profile already exists for user: {instance.username}')
+
+@receiver(post_save, sender=User)
+def save_customer(sender, instance, **kwargs):
+    #to save the related customer instance when the user instance is saved
+    customer = getattr(instance, 'customer', None) #trying to avoid attribute errors
+    if customer:
+        customer.save()
+
+@receiver(post_save, sender=User)
+def update_profile(sender, instance, created, **kwargs):
+    if not created:
+        customer = getattr(instance, 'customer', None)
+        if customer:
+            customer.save()
+            logger.info('Customer Profile updated')
+
+
+
+
+
+
+
+
+'''
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User, Group
 from .models import Customer
 
@@ -18,13 +61,13 @@ def customer_profile(sender, instance, created, **kwargs):
             name=instance.username,
         )
         print('Customer Profile Created!')
+'''
 
-@receiver(post_save, sender=User)
-def save_customer(sender, instance, **kwargs):
-    '''Saves the related customer instance when the user instance is saved'''
-    instance.customer.save()
+'''@receiver(post_save, sender=User)
+def save_customer(sender, instance, **kwargs):''''''Saves the related customer instance when the user instance is saved
+    instance.customer.save()'''
 
-    '''
+'''
     customer = getattr(instance, 'customer', None) #prevents attribute error
     if customer:
         customer.save()
@@ -58,7 +101,7 @@ post_save.connect(customer_profile, sender=Customer)
 '''
 
 
-
+'''
 @receiver(post_save, sender=User)
 def update_profile(sender, instance, created, **kwargs):
     if created == False:
@@ -66,3 +109,4 @@ def update_profile(sender, instance, created, **kwargs):
         print('Profile updated!')
 post_save.connect(update_profile, sender=User)
 
+'''

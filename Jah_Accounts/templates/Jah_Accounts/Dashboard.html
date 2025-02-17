@@ -18,11 +18,14 @@
                     <th>Phone</th>
                 </tr>
                 {% for customers in customers %}
-                  <tr>
-                    <td><a class="btn btn-sm btn-outline-info" href="{% url 'customers' customers.id %}">view</a></td>
-                    <td>{{ customers.name }}</td>
-                    <td>{{ customers.phone }}</td>
-                  </tr>
+                <div >
+                    <tr>
+                        <td><a class="btn btn-sm btn-outline-info" href="{% url 'customers' customers.id %}">view</a></td>
+                        <td>{{ customers.name }}</td>
+                        <td>{{ customers.phone }}</td>
+                    </tr>
+                </div>
+                  
                 {% endfor %}
             </table>
         </div>

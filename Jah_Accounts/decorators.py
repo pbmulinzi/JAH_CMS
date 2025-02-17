@@ -1,3 +1,52 @@
+
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.core.exceptions import ObjectDoesNotExist
+
+def unauthenticated_user(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return view_func(request, *args, **kwargs)
+        
+    return wrapper_func
+
+
+def allowed_users(allowed_roles=[]):
+    def decorator(view_func):
+        def wrapper_func(request, *args, **kwargs):
+            if request.user.groups.exists():
+                user_groups = request.user.groups.values_list('name', flat = True)
+                if any(group in allowed_roles for group in user_groups):
+                    return view_func(request, *args, **kwargs)                
+            return HttpResponse('You are not allowed to view this page.')
+        return wrapper_func
+    return decorator
+
+def admin_only(view_func):
+    def wrapper_function(request, *args, **kwargs):
+        if request.user.groups.exists():
+            group = request.user.groups.first().name
+            if group == 'customer':
+                return redirect ('user-page')
+            elif group == 'admin':
+                return view_func(request, *args, **kwargs)
+        return redirect('register')
+    return wrapper_function
+
+
+                
+
+
+
+
+
+
+
+
+
+'''
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
@@ -31,6 +80,9 @@ def allowed_users(allowed_roles=[]):
                 return HttpResponse('You are not allowed to view this page.')
         return wrapper_func
     return decorator
+'''
+
+
 
 '''   
 
@@ -41,7 +93,7 @@ def allowed_users(allowed_roles=[]):
             #group = None
             if request.user.groups.exists():
                 #group = request.user.groups.all()[0].name
-                #Changing coz the line above only caters for only one group, while the line below caters for users belonging to multiple groups
+                #Changing coz the line above only caters for only one group(the first group), while the line below caters for users belonging to multiple groups
                 groupss = request.user.groups.values_list('name', flat=True)
             else:
                 group = [] #default to an empty list if no group exists
@@ -58,6 +110,9 @@ def allowed_users(allowed_roles=[]):
     return decorator
 '''
 
+
+
+'''
 def admin_only(view_func):
     def wrapper_function(request, *args, **kwargs):
         #group = None
@@ -82,3 +137,4 @@ def admin_only(view_func):
         
     return wrapper_function
 
+'''
