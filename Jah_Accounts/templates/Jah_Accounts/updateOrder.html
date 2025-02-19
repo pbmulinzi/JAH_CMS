@@ -1,0 +1,19 @@
+{% extends 'Jah_Accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body" style="background-color: rgb(223, 220, 207);">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form}}
+                <input type="submit" name="Submit">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

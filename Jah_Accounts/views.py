@@ -17,6 +17,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+'''
 @unauthenticated_user
 @csrf_protect
 def registerPage(request):
@@ -46,8 +47,10 @@ def registerPage(request):
     return render(request, 'Jah_Accounts/register.html', context)
 
 '''
-@unauthenticated_user
-@csrf_protect
+
+
+#@unauthenticated_user
+#@csrf_protect
 def registerPage(request):
     # if request.user.is_authenticated:
     #     return redirect('home')
@@ -71,10 +74,10 @@ def registerPage(request):
     context = {'form': form}
     return render(request, 'Jah_Accounts/register.html', context)
 
-'''
 
-@unauthenticated_user
-@csrf_protect
+
+#@unauthenticated_user
+#@csrf_protect
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -100,8 +103,8 @@ def logoutUser(request):
     return redirect('login')
 
 
-@login_required(login_url='login')
-@admin_only
+#@login_required(login_url='login')
+#@admin_only
 def dashboard(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -122,8 +125,8 @@ def dashboard(request):
     return render(request, 'Jah_Accounts/Dashboard.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['customer', 'admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['customer', 'admin'])
 def userPage(request):
     customer, created = Customer.objects.get_or_create(user=request.user)
     orders = customer.order_set.all()
@@ -143,15 +146,15 @@ def userPage(request):
     return render(request, 'Jah_Accounts/user.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin', 'customer'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin', 'customer'])
 def products(request):
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
 def customers(request, cust_id):
     customer = Customer.objects.get(id=cust_id)
     orders = customer.order_set.all()
@@ -169,9 +172,9 @@ def customers(request, cust_id):
     return render(request, 'Jah_Accounts/Customer.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-@csrf_protect
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'Quantity', 'note', 'status'), extra=4)
     customer = Customer.objects.get(id=pk)
@@ -187,9 +190,9 @@ def createOrder(request, pk):
     return render(request, 'Jah_Accounts/order_form.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-@csrf_protect
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
@@ -201,12 +204,12 @@ def updateOrder(request, pk):
             return redirect('/')
 
     context = {'form': form}
-    return render(request, 'Jah_Accounts/order_form.html', context)
+    return render(request, 'Jah_Accounts/updateOrder.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-@csrf_protect
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
 
@@ -218,9 +221,9 @@ def deleteOrder(request, pk):
     return render(request, 'Jah_Accounts/delete.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-@csrf_protect
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     form = CustomerForm(instance=customer)
@@ -235,9 +238,9 @@ def updateCustomer(request, pk):
     return render(request, 'Jah_Accounts/updateCustomer.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
-@csrf_protect
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['admin'])
+#@csrf_protect
 def createCustomer(request):
     form = CustomerForm()
 
@@ -251,9 +254,9 @@ def createCustomer(request):
     return render(request, 'Jah_Accounts/createCustomer.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['customer', 'admin'])
-@csrf_protect
+#@login_required(login_url='login')
+#@allowed_users(allowed_roles=['customer', 'admin'])
+#@csrf_protect
 def accountSettings(request):
     customer = request.user.customer
     form = CustomerForm(instance=customer)

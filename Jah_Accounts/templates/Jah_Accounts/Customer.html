@@ -8,11 +8,11 @@
     <div class="row">
         <div class="col-md">
             <div class="card card-body">
-                <h5>{{customer_name}}</h5>
+                <h5>{{customer}}</h5>
                 
                 <hr>
-                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'updateCustomer' customers.id %}">Update Customer</a>
-                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'createOrder' customers.id %}">Place Order</a>
+                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'updateCustomer' customer.id %}">Update Customer</a>
+                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'createOrder' customer.id %}">Place Order</a>
             </div>
         </div>
     
@@ -20,8 +20,8 @@
             <div class="card card-body">
                 <h5>Contact Information</h5>
                 <hr>
-                <p><b>Email</b>: {{customers.email}}</p>
-                <p><b>Phone</b>: {{customers.phone}}</p>
+                <p><b>Email</b>: {{customer.email}}</p>
+                <p><b>Phone</b>: {{customer.phone}}</p>
             </div>
         </div>
     
