@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
+from django.http import HttpResponse
 
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
@@ -57,6 +58,9 @@ def registerPage(request):
             # Customer.objects.create(user=user)
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
+        else:
+            messages.info(request, 'Try again.')
+
 
     context = {'form': form}
     return render(request, 'Jah_Accounts/register.html', context)
