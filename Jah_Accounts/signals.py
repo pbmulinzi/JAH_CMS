@@ -9,14 +9,15 @@ logger = logging.getLogger(__name__)
 @receiver(post_save, sender=Customer)
 def create_customer_profile(sender, instance, created, **kwargs):
     if created:
+        username = instance.user.username
         customer, created = Customer.objects.get_or_create(
-            user=instance, 
-            defaults={'name': instance.username},
+            user=instance.user, 
+            defaults={'name': username},
             )
         if created:
-            logger.info(f'Customer profile created for user: {instance.username}')
+            logger.info(f'Customer profile created for user: {username}')
         else:
-            logger.warning(f'Customer profile already exists for user: {instance.username}')
+            logger.warning(f'Customer profile already exists for user: {username}')
 
 @receiver(post_save, sender=User)
 def save_customer(sender, instance, **kwargs):
