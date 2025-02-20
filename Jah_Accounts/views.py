@@ -137,6 +137,7 @@ def userPage(request):
     out_for_delivery = orders.filter(status='Out for delivery').count()
 
     context = {
+        'customer': customer, 
         'orders': orders,
         'total_orders': total_orders,
         'pending': pending,
@@ -177,7 +178,7 @@ def customers(request, cust_id):
 #@csrf_protect
 def createOrder(request, pk):
     OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'Quantity', 'note', 'status'), extra=4)
-    customer = Customer.objects.get(id=pk)
+    customer = Customer.objects.get(user_id=pk)
     formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
 
     if request.method == 'POST':
