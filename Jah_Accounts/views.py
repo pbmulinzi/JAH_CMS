@@ -10,7 +10,7 @@ from django.http import HttpResponse
 
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
-from .filters import OrderFilter
+#from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 
 import logging
@@ -103,7 +103,7 @@ def logoutUser(request):
     return redirect('login')
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@admin_only
 def dashboard(request):
     orders = Order.objects.all()
@@ -125,8 +125,8 @@ def dashboard(request):
     return render(request, 'Jah_Accounts/Dashboard.html', context)
 
 
-#@login_required(login_url='login')
-#@allowed_users(allowed_roles=['customer', 'admin'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer', 'admin'])
 def userPage(request):
     customer, created = Customer.objects.get_or_create(user=request.user)
     orders = customer.order_set.all()
@@ -147,33 +147,33 @@ def userPage(request):
     return render(request, 'Jah_Accounts/user.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin', 'customer'])
 def products(request):
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin'])
 def customers(request, cust_id):
     customer = Customer.objects.get(id=cust_id)
     orders = customer.order_set.all()
     order_count = orders.count()
 
-    myFilter = OrderFilter(request.GET, queryset=orders)
-    orders = myFilter.qs
+    #myFilter = OrderFilter(request.GET, queryset=orders)
+    #orders = myFilter.qs
 
     context = {
         'customer': customer,
         'orders': orders,
         'order_count': order_count,
-        'myFilter': myFilter,
+        # 'myFilter': myFilter,
     }
     return render(request, 'Jah_Accounts/Customer.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def createOrder(request, pk):
@@ -191,7 +191,7 @@ def createOrder(request, pk):
     return render(request, 'Jah_Accounts/order_form.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def updateOrder(request, pk):
@@ -208,7 +208,7 @@ def updateOrder(request, pk):
     return render(request, 'Jah_Accounts/updateOrder.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def deleteOrder(request, pk):
@@ -222,7 +222,7 @@ def deleteOrder(request, pk):
     return render(request, 'Jah_Accounts/delete.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def updateCustomer(request, pk):
@@ -239,7 +239,7 @@ def updateCustomer(request, pk):
     return render(request, 'Jah_Accounts/updateCustomer.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def createCustomer(request):
@@ -255,7 +255,7 @@ def createCustomer(request):
     return render(request, 'Jah_Accounts/createCustomer.html', context)
 
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 #@allowed_users(allowed_roles=['customer', 'admin'])
 #@csrf_protect
 def accountSettings(request):
