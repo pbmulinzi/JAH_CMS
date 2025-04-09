@@ -10,7 +10,7 @@ from django.http import HttpResponse
 
 from .models import *
 from .forms import OrderForm, CreateUserForm, CustomerForm
-#from .filters import OrderFilter
+from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 
 import logging
@@ -49,7 +49,7 @@ def registerPage(request):
 '''
 
 
-#@unauthenticated_user
+@unauthenticated_user
 #@csrf_protect
 def registerPage(request):
     # if request.user.is_authenticated:
@@ -76,7 +76,7 @@ def registerPage(request):
 
 
 
-#@unauthenticated_user
+@unauthenticated_user
 #@csrf_protect
 def loginPage(request):
     if request.user.is_authenticated:
@@ -161,14 +161,14 @@ def customers(request, cust_id):
     orders = customer.order_set.all()
     order_count = orders.count()
 
-    #myFilter = OrderFilter(request.GET, queryset=orders)
-    #orders = myFilter.qs
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs
 
     context = {
         'customer': customer,
         'orders': orders,
         'order_count': order_count,
-        # 'myFilter': myFilter,
+        'myFilter': myFilter,
     }
     return render(request, 'Jah_Accounts/Customer.html', context)
 
