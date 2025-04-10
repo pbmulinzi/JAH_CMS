@@ -110,7 +110,8 @@ def dashboard(request):
     customers = Customer.objects.all()
 
     total_orders = orders.count()
-    pending = Order.objects.filter(status='Pending').count()
+    # pending = Order.objects.filter(status__startswith='P').count()
+    pending = Order.objects.filter(status = "Pending").count()
     delivered = Order.objects.filter(status='Delivered').count()
     out_for_delivery = Order.objects.filter(status='Out for delivery').count()
 
