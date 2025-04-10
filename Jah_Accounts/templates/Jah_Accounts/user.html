@@ -23,6 +23,8 @@
                     <th>Quantity</th>
                     <th>Date Ordered</th>
                     <th>Status</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                 </tr>
             
                 {% for order in orders  %}
@@ -31,6 +33,8 @@
                         <td>{{ order.Quantity }}</td>
                         <td>{{ order.date_created }}</td>
                         <td>{{ order.status }}</td>
+                        <td><a class="btn btn-outline-info btn-sm " href="{% url 'updateOrder' order.id %}">Update</a></td>
+                        <td><a class="btn btn-outline-danger btn-sm btn-block" href="{% url 'deleteOrder' order.id %}">Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>

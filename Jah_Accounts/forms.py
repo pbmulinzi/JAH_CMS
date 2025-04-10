@@ -12,16 +12,20 @@ class OrderForm(ModelForm):
         fields = '__all__'
 
 ##creating/ updating a customer
+class AccountCustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['user', 'name', 'phone', 'email']
+
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
         fields = '__all__'
-        exclude = ['user']
 
 class CreateCustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = ['name', 'phone', 'email']
+        fields = ['name', 'phone', 'email', 'user']
 
 #form for user registration
 class CreateUserForm(UserCreationForm):

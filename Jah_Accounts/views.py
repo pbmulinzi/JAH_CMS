@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from .models import *
-from .forms import OrderForm, CreateUserForm, CustomerForm, CreateCustomerForm
+from .forms import OrderForm, CreateUserForm, CustomerForm, CreateCustomerForm, AccountCustomerForm
 from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 
@@ -17,40 +17,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-'''
-@unauthenticated_user
-@csrf_protect
-def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
 
-    form = CreateUserForm()
-
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data.get('username')
-            logger.info(f'User created: {username}')
-
-            Customer.objects.create(user=user, name= username)        
-            logger.info(f'Customer created for user: {username}')
-
-
-            messages.success(request, 'Account was created for ' + username)
-            return redirect('login')
-        else:
-            messages.info(request, 'Try again.')
-            logger.warning(f'Form errors: {form.errors}')
-
-    context = {'form': form}
-    return render(request, 'Jah_Accounts/register.html', context)
-
-'''
-
-
-@unauthenticated_user
-#@csrf_protect
+#@unauthenticated_user
+# @csrf_protect
 def registerPage(request):
     # if request.user.is_authenticated:
     #     return redirect('home')
@@ -76,8 +45,8 @@ def registerPage(request):
 
 
 
-@unauthenticated_user
-#@csrf_protect
+#@unauthenticated_user
+# @csrf_protect
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -104,7 +73,7 @@ def logoutUser(request):
 
 
 @login_required(login_url='login')
-#@admin_only
+@admin_only
 def dashboard(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -149,14 +118,14 @@ def userPage(request):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin', 'customer'])
+@allowed_users(allowed_roles=['admin', 'customer'])
 def products(request):
     products = Product.objects.all()
     return render(request, 'Jah_Accounts/Products.html', {'products': products})
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 def customers(request, cust_id):
     customer = Customer.objects.get(id=cust_id)
     orders = customer.order_set.all()
@@ -175,10 +144,10 @@ def customers(request, cust_id):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin', 'customer'])
 #@csrf_protect
 def createOrder(request, pk):
-    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'Quantity', 'note', 'status'), extra=4)
+    OrderFormSet = inlineformset_factory(Customer, Order, fields=('Product', 'Quantity', 'units', 'note', 'status'), extra=4)
     customer = Customer.objects.get(user_id=pk)
     formset = OrderFormSet(queryset=Order.objects.none(), instance=customer)
 
@@ -193,7 +162,7 @@ def createOrder(request, pk):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin', 'customer'])
 #@csrf_protect
 def updateOrder(request, pk):
     order = Order.objects.get(id=pk)
@@ -210,7 +179,7 @@ def updateOrder(request, pk):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin', 'customer'])
 #@csrf_protect
 def deleteOrder(request, pk):
     order = Order.objects.get(id=pk)
@@ -224,7 +193,7 @@ def deleteOrder(request, pk):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
+@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
@@ -241,8 +210,8 @@ def updateCustomer(request, pk):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['admin'])
-#@csrf_protect
+@allowed_users(allowed_roles=['admin'])
+# @csrf_protect
 def createCustomer(request):
     form = CreateCustomerForm()
 
@@ -257,14 +226,14 @@ def createCustomer(request):
 
 
 @login_required(login_url='login')
-#@allowed_users(allowed_roles=['customer', 'admin'])
+@allowed_users(allowed_roles=['customer', 'admin'])
 #@csrf_protect
 def accountSettings(request):
     customer = request.user.customer
-    form = CustomerForm(instance=customer)
+    form = AccountCustomerForm(instance=customer)
 
     if request.method == 'POST':
-        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        form = AccountCustomerForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():
             form.save()
             messages.success(request, 'Account settings updated successfully!')

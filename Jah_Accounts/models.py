@@ -53,7 +53,7 @@ class Order(models.Model):
     tags = models.ManyToManyField(Tag)
     Quantity = models.CharField(null=True, max_length=4)
     units = models.CharField(max_length=200, null=True, choices=MEASUREMENT,)
-    note = models.CharField(max_length=200, null=True)
+    note = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.Product.name
