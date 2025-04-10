@@ -18,6 +18,11 @@ class CustomerForm(ModelForm):
         fields = '__all__'
         exclude = ['user']
 
+class CreateCustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['name', 'phone', 'email']
+
 #form for user registration
 class CreateUserForm(UserCreationForm):
     class Meta:

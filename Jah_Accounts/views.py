@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 from .models import *
-from .forms import OrderForm, CreateUserForm, CustomerForm
+from .forms import OrderForm, CreateUserForm, CustomerForm, CreateCustomerForm
 from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 
@@ -244,10 +244,10 @@ def updateCustomer(request, pk):
 #@allowed_users(allowed_roles=['admin'])
 #@csrf_protect
 def createCustomer(request):
-    form = CustomerForm()
+    form = CreateCustomerForm()
 
     if request.method == 'POST':
-        form = CustomerForm(request.POST)
+        form = CreateCustomerForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/')

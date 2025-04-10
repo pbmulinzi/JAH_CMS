@@ -25,16 +25,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mu1*lob-#bwkn#7k+k7@03ck-m_cz3$tr$ogai1otz4*xnn53m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-'''
-DEBUG = False
+
+DEBUG = True
 # Since I have turned the debug to false and yet I am running the app on local host. I should adjust or...
 # ...set the allowed hosts to "*" or all...
 ALLOWED_HOSTS = ["*"]
-'''
 
+'''
 DEBUG = True
 
 ALLOWED_HOSTS = []
+'''
 
 
 # Application definition
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'JahCMS.urls'
@@ -138,14 +140,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 #read more on static urls
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-MEDIA_URL = '/images/' #linking the images in my static files to the settings in the project - this one -
+MEDIA_URL = '/media/' #linking the images in my static files to the settings in the project - this one -
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
