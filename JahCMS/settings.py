@@ -25,17 +25,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mu1*lob-#bwkn#7k+k7@03ck-m_cz3$tr$ogai1otz4*xnn53m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
-DEBUG = True
+'''
+DEBUG = False
 # Since I have turned the debug to false and yet I am running the app on local host. I should adjust or...
 # ...set the allowed hosts to "*" or all...
 ALLOWED_HOSTS = ["*"]
-
 '''
+
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
-'''
+
 
 
 # Application definition
